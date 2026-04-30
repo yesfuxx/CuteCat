@@ -283,8 +283,8 @@
         'https://rawcdn.githack.com/KhronosGroup/glTF-Sample-Assets/main/Models/Cat/glTF-Binary/Cat.glb',
         gltf => {
           cat = gltf.scene;
-          cat.scale.setScalar(0.02);
-          cat.position.y = -0.48;
+          cat.scale.setScalar(1);
+          cat.position.y = -0.8;
           scene.add(cat);
 
           mixer = new THREE.AnimationMixer(cat);
@@ -293,7 +293,10 @@
             action.enabled = true;
             return action;
           });
-          if (actions.length) setAction(0);
+          if (actions.length) {
+            mood.textContent = `已加载 ${actions.length} 个动作`;
+            setAction(0);
+          }
         },
         (evt) => {
           if (!evt.total) return;

@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CatCat Pink</title>
+    <style>
+      :root {
+        --bg-1: #ffd5e8;
+        --bg-2: #ffe7f4;
+        --bg-3: #ffeef9;
+        --card: rgba(255, 255, 255, 0.56);
+        --line: rgba(255, 255, 255, 0.8);
+        --text-main: #5f3b52;
+        --text-sub: #946a81;
+        --accent: #ff76b5;
+        --accent-2: #ff9ac9;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        font-family: 'Nunito', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        color: var(--text-main);
+      }
+
+      body {
+        overflow: hidden;
+        background: radial-gradient(circle at 8% 15%, #fff 0%, transparent 30%),
+          radial-gradient(circle at 92% 25%, #fff0f7 0%, transparent 40%),
+          linear-gradient(150deg, var(--bg-1), var(--bg-2) 55%, var(--bg-3));
+      }
+
+      .sparkles {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .dot {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.72);
+        animation: floatUp linear infinite;
+      }
+
+      @keyframes floatUp {
+        from { transform: translateY(0) scale(1); opacity: 0.15; }
+        40% { opacity: 0.9; }
+        to { transform: translateY(-120px) scale(1.55); opacity: 0; }
+      }
+
+      .wrap {
+        position: relative;
+        z-index: 2;
+        display: grid;
+        place-items: center;
+        height: 100%;
+        padding: 18px;
+      }
+
+      .card {
+        width: min(980px, 95vw);
+        min-height: min(90vh, 760px);
+        border-radius: 32px;
+        border: 1px solid var(--line);
+        background: linear-gradient(145deg, rgba(255,255,255,0.72), var(--card));
+        box-shadow: 0 24px 80px rgba(136, 73, 107, 0.16), inset 0 2px 0 rgba(255,255,255,0.6);
+        backdrop-filter: blur(14px);
+        display: grid;
+        grid-template-columns: 1fr 1.1fr;
+        overflow: hidden;
+      }
+
+      .left,
+      .right {
+        padding: clamp(20px, 4vw, 40px);
+      }
+
+      .left {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        justify-content: center;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(34px, 5vw, 56px);
+        letter-spacing: 0.02em;
+      }
+
+      .subtitle {
+        margin: 0;
+        color: var(--text-sub);
+        line-height: 1.65;
+      }
+
+      .mood-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        width: fit-content;
+        background: rgba(255, 255, 255, 0.85);
+        border-radius: 999px;
+        padding: 8px 14px;
+        font-size: 14px;
+      }
+
+      .actions {
+        margin-top: 6px;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      button {
+        border: none;
+        border-radius: 999px;
+        padding: 11px 18px;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: transform .18s ease, box-shadow .18s ease;
+      }
+
+      .primary {
+        background: linear-gradient(130deg, var(--accent), var(--accent-2));
+        color: white;
+        box-shadow: 0 8px 20px rgba(255, 118, 181, 0.36);
+      }
+
+      .ghost {
+        background: rgba(255,255,255,0.8);
+        color: var(--text-main);
+        border: 1px solid rgba(255,255,255,0.95);
+      }
+
+      button:hover { transform: translateY(-2px); }
+
+      .tip {
+        margin-top: 8px;
+        font-size: 13px;
+        color: #9d7890;
+      }
+
+      .right {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: radial-gradient(circle at center, rgba(255,255,255,0.55), rgba(255,255,255,0));
+      }
+
+      #stage {
+        width: 100%;
+        height: min(70vh, 640px);
+        border-radius: 24px;
+      }
+
+      .heart {
+        position: absolute;
+        font-size: 20px;
+        pointer-events: none;
+        animation: burst 1200ms ease forwards;
+        filter: drop-shadow(0 3px 5px rgba(255, 118, 181, 0.4));
+      }
+
+      @keyframes burst {
+        to {
+          transform: translate(var(--tx), var(--ty)) scale(0.2) rotate(20deg);
+          opacity: 0;
+        }
+      }
+
+      @media (max-width: 900px) {
+        .card {
+          grid-template-columns: 1fr;
+          min-height: auto;
+        }
+        #stage {
+          height: 45vh;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="sparkles" id="sparkles" aria-hidden="true"></div>
+
+    <main class="wrap">
+      <section class="card" id="card">
+        <div class="left">
+          <h1>CatCat Pink ✨</h1>
+          <p class="subtitle">
+            同款粉色萌宠风格升级版：真正 3D 猫咪 GLB 模型、多动作循环动画、
+            以及点击爆爱心与鼠标跟随互动。
+          </p>
+          <div class="mood-tag">当前动作：<strong id="mood">Idle</strong></div>
+
+          <div class="actions">
+            <button class="primary" id="nextAction">切换动作</button>
+            <button class="ghost" id="loveBurst">喵喵爱心特效</button>
+          </div>
+          <p class="tip">提示：拖动旋转猫咪，点击模型可切换动作，移动鼠标有轻微跟手效果。</p>
+        </div>
+
+        <div class="right" id="stageHost">
+          <canvas id="stage" aria-label="3D cat model"></canvas>
+        </div>
+      </section>
+    </main>
+
+    <script type="module">
+      import * as THREE from 'https://unpkg.com/three@0.162.0/build/three.module.js';
+      import { OrbitControls } from 'https://unpkg.com/three@0.162.0/examples/jsm/controls/OrbitControls.js';
+      import { GLTFLoader } from 'https://unpkg.com/three@0.162.0/examples/jsm/loaders/GLTFLoader.js';
+
+      const canvas = document.getElementById('stage');
+      const stageHost = document.getElementById('stageHost');
+      const mood = document.getElementById('mood');
+
+      const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
+      camera.position.set(0, 1.1, 3.3);
+
+      const hemi = new THREE.HemisphereLight(0xffffff, 0xffd4ea, 1.3);
+      const key = new THREE.DirectionalLight(0xffffff, 1.5);
+      key.position.set(4, 6, 6);
+      const fill = new THREE.DirectionalLight(0xffb4da, 0.7);
+      fill.position.set(-4, 3, -2);
+      scene.add(hemi, key, fill);
+
+      const controls = new OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true;
+      controls.enablePan = false;
+      controls.minDistance = 2.3;
+      controls.maxDistance = 5;
+      controls.target.set(0, 0.8, 0);
+
+      const clock = new THREE.Clock();
+      const loader = new GLTFLoader();
+
+      let mixer;
+      let actions = [];
+      let actionIndex = 0;
+      let cat;
+
+      const actionNames = ['Idle', 'Walk', 'Run', 'Jump', 'Happy'];
+
+      function resize() {
+        const { clientWidth, clientHeight } = stageHost;
+        renderer.setSize(clientWidth, clientHeight, false);
+        camera.aspect = clientWidth / clientHeight;
+        camera.updateProjectionMatrix();
+      }
+
+      function setAction(index) {
+        if (!actions.length) return;
+        const next = actions[index % actions.length];
+        actions.forEach(a => a.fadeOut(0.22));
+        next.reset().fadeIn(0.22).play();
+        mood.textContent = actionNames[index % actionNames.length] || `Action ${index + 1}`;
+      }
+
+      function nextAction() {
+        if (!actions.length) return;
+        actionIndex = (actionIndex + 1) % actions.length;
+        setAction(actionIndex);
+      }
+
+      loader.load(
+        'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Assets/main/Models/Cat/glTF-Binary/Cat.glb',
+        gltf => {
+          cat = gltf.scene;
+          cat.scale.setScalar(0.02);
+          cat.position.y = -0.48;
+          scene.add(cat);
+
+          mixer = new THREE.AnimationMixer(cat);
+          actions = gltf.animations.map(clip => {
+            const action = mixer.clipAction(clip);
+            action.enabled = true;
+            return action;
+          });
+          if (actions.length) setAction(0);
+        },
+        undefined,
+        () => {
+          mood.textContent = '模型加载失败';
+        }
+      );
+
+      const pointer = { x: 0, y: 0 };
+      window.addEventListener('pointermove', (e) => {
+        pointer.x = (e.clientX / window.innerWidth) * 2 - 1;
+        pointer.y = -((e.clientY / window.innerHeight) * 2 - 1);
+      });
+
+      document.getElementById('nextAction').addEventListener('click', nextAction);
+      canvas.addEventListener('click', nextAction);
+
+      function spawnHearts(count = 14) {
+        const hostRect = stageHost.getBoundingClientRect();
+        for (let i = 0; i < count; i++) {
+          const heart = document.createElement('span');
+          heart.className = 'heart';
+          heart.textContent = Math.random() > 0.5 ? '💗' : '🐾';
+          heart.style.left = `${Math.random() * hostRect.width}px`;
+          heart.style.top = `${hostRect.height * 0.7 + Math.random() * 60}px`;
+          heart.style.setProperty('--tx', `${(Math.random() - 0.5) * 220}px`);
+          heart.style.setProperty('--ty', `${-120 - Math.random() * 180}px`);
+          stageHost.appendChild(heart);
+          setTimeout(() => heart.remove(), 1300);
+        }
+      }
+
+      document.getElementById('loveBurst').addEventListener('click', () => spawnHearts(18));
+
+      const sparkleWrap = document.getElementById('sparkles');
+      for (let i = 0; i < 30; i++) {
+        const dot = document.createElement('i');
+        dot.className = 'dot';
+        dot.style.left = `${Math.random() * 100}%`;
+        dot.style.top = `${40 + Math.random() * 70}%`;
+        dot.style.animationDuration = `${4 + Math.random() * 5}s`;
+        dot.style.animationDelay = `${Math.random() * 4}s`;
+        sparkleWrap.appendChild(dot);
+      }
+
+      function tick() {
+        requestAnimationFrame(tick);
+        const dt = clock.getDelta();
+        if (mixer) mixer.update(dt);
+
+        if (cat) {
+          cat.rotation.y += (pointer.x * 0.25 - cat.rotation.y) * 0.05;
+          cat.rotation.x += (pointer.y * 0.08 - cat.rotation.x) * 0.05;
+        }
+
+        controls.update();
+        renderer.render(scene, camera);
+      }
+
+      window.addEventListener('resize', resize);
+      resize();
+      tick();
+    </script>
+  </body>
+</html>
